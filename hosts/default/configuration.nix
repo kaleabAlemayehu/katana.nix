@@ -158,6 +158,7 @@
     mesa
     pkg-config
     clipman
+    xclip
     xfce.xfce4-clipman-plugin
     wireshark
   ];
