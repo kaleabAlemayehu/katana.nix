@@ -157,9 +157,8 @@
     xorg.libXxf86vm
     mesa
     pkg-config
-    clipman
+    copyq
     xclip
-    xfce.xfce4-clipman-plugin
     wireshark
   ];
   # enable editor to be vim
