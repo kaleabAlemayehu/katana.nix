@@ -115,6 +115,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    qimgv
+    clipqr
+    signal-desktop
     tinygo
     unzipNLS
     stow
