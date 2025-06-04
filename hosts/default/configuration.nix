@@ -115,6 +115,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    inetutils
+    busybox
+    openssl
+    lsof
+    zip
+    rlwrap
     minimal-bootstrap.mescc-tools-extra
     mescc-tools-extra
     qimgv
@@ -206,6 +212,9 @@ services.xremap = {
           esc: capslock
   '';
 };
+  
+services.xserver.windowManager.i3.enable = true;
+
  fonts.packages = with pkgs; [
     jetbrains-mono
   ];
