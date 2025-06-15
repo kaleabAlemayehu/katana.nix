@@ -106,6 +106,21 @@
      "neo" = import ./home.nix;
     };
   };
+  # enabling gtk
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Materia-dark";       # For DeepOcean
+      # name = "Arc-Dark";         # For Palenight
+      package = pkgs.materia-theme; # or pkgs.arc-theme
+    };
+  };
+
+  # Set Qt apps to use GTK theme
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+  };
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -115,6 +130,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    materia-theme # For DeepOcean-like dark theme
+    arc-theme 
+    zeal
     brightnessctl
     pulseaudio    # or pipewire if you're using that
     xorg.xev   # optional, for checking key symbols

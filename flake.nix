@@ -23,6 +23,8 @@
       # system= "x86_64-linux";
       modules = [
         ./hosts/default/configuration.nix
+        # ./modules/nixos/palenight.nix
+        ./modules/nixos/deepocean.nix
         inputs.home-manager.nixosModules.default
         ({ pkgs, ... }: {
           environment.systemPackages = [
