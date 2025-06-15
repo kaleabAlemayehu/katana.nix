@@ -115,6 +115,16 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    brightnessctl
+    pulseaudio    # or pipewire if you're using that
+    xorg.xev   # optional, for checking key symbols
+    superfile
+    feh
+    rofi           # app launcher
+    picom          # compositor for transparency/shadows
+    lxappearance   # theme switcher for GTK
+    dunst          # notifications
+    i3status       # status bar
     inetutils
     busybox
     openssl
