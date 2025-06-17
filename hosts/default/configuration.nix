@@ -115,6 +115,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    mise
+    trayer
+    polkit_gnome
     materia-theme # For DeepOcean-like dark theme
     arc-theme 
     zeal
