@@ -99,6 +99,8 @@
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   home-manager = {
     # also pass inputs to home-manager modules
     extraSpecialArgs = {inherit inputs;};
@@ -111,10 +113,14 @@
   programs.firefox.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    pgadmin4
+    valkey
+    hugo
+    ffmpeg-full
+    sqlite
     air
     mise
     trayer
