@@ -39,7 +39,6 @@ nixpkgs.config.allowUnfree = true;
     #   echo "Hello, ${config.home.username}!"
     # '')
     riseup-vpn
-    postman
     jq
     ddgr
     goose
@@ -131,21 +130,11 @@ nixpkgs.config.allowUnfree = true;
     '';
   };
 
-  services.ssh-agent.enable = true;
-
-
-  # Enable that custom systemd user service
-  systemd.user.services.ssh-add-key = {
-    Unit = {
-      Description = "Add GitHub SSH key to ssh-agent";
-      After = [ "ssh-agent.service" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.openssh}/bin/ssh-add ${config.home.homeDirectory}/.ssh/github_id_ed25519";
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
+  programs.keychain = {
+    enable = true;
+    keys = [ "github_id_ed25519" ];
+    agents = [ "ssh" ];
+    enableBashIntegration = true;
   };
+
 }
