@@ -50,6 +50,8 @@
     enable = true;
   };
 
+  # enable finger print
+  services.fprintd.enable = true;
 
   # Enable docker
   virtualisation.docker.enable = true;
@@ -112,10 +114,18 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Enable AMD GPU drivers
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  # Enable OpenGL and OpenCL support
+  hardware.opengl.enable = true;
   # Allow unfree packages
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    coreutils
+    libnotify
+    rofi-power-menu
+    davinci-resolve
     pgadmin4
     valkey
     hugo
@@ -127,7 +137,7 @@
     polkit_gnome
     materia-theme # For DeepOcean-like dark theme
     arc-theme 
-    zeal
+    # zeal
     brightnessctl
     pulseaudio    # or pipewire if you're using that
     xorg.xev   # optional, for checking key symbols
@@ -194,6 +204,7 @@
     copyq
     xclip
     wireshark
+home-manager
   ];
   # enable editor to be vim
   environment.variables.EDITOR = "vim";
