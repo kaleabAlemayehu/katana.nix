@@ -20,7 +20,6 @@ nixpkgs.config.allowUnfree = true;
   # environment.
 # home.nix
 
-
   home.packages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
@@ -66,7 +65,6 @@ nixpkgs.config.allowUnfree = true;
     lazygit
     deno
     rustc
-    docker_25
     libGL
     mesa
     xorg.libXi
@@ -118,6 +116,8 @@ nixpkgs.config.allowUnfree = true;
 
   programs.home-manager.enable = true;
 
+
+
   programs.ssh = {
     enable = true;
     extraConfig = ''
@@ -127,14 +127,33 @@ nixpkgs.config.allowUnfree = true;
         User git
         IdentityFile ~/.ssh/github_id_ed25519
         IdentitiesOnly yes
+
+      Host awura.tech
+        HostName git.awura.tech
+        Port 443
+        User git
+        IdentityFile ~/.ssh/awura_gitlab_id_ed25519
+        IdentitiesOnly yes
+      Host 91.99.186.71
+        Port 443
+        User root
+        IdentityFile ~/.ssh/awura_gitlab_id_ed25519
+        IdentitiesOnly yes
     '';
   };
 
-  programs.keychain = {
-    enable = true;
-    keys = [ "github_id_ed25519" ];
-    agents = [ "ssh" ];
-    enableBashIntegration = true;
+  # programs.keychain = {
+  #   enable = true;
+  #   keys = [ "github_id_ed25519" ];
+  #   agents = [ "ssh" ];
+  #   enableBashIntegration = true;
+  # };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "Adwaita-dark";
+    };
   };
 
 }

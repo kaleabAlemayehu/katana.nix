@@ -27,7 +27,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  # time.timeZone = "America/New_York";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -85,6 +85,13 @@
     #media-session.enable = true;
   };
 
+ hardware.graphics.extraPackages = with pkgs; [
+    mesa.opencl 
+  ];
+environment.variables = {
+    RUSTICL_ENABLE = "radeonsi";
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   # Enable flakes
@@ -97,7 +104,7 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       neovim
-    #  thunderbird
+     thunderbird
     ];
   };
 
@@ -114,6 +121,12 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Enable dconf for theme switching
+  programs.dconf.enable = true;
+
+  # Enable automatic timezoned  
+  services.automatic-timezoned.enable = true;
+
   # Enable AMD GPU drivers
   services.xserver.videoDrivers = [ "amdgpu" ];
   # Enable OpenGL and OpenCL support
@@ -122,6 +135,23 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    obs-studio
+    antigravity
+    exercism
+    cargo
+    clinfo
+    postman
+    efibootmgr
+    dbeaver-bin
+    uv
+    nmap
+    kdePackages.okular
+    obsidian
+    vicinae
+    slack
+    slack-cli
+    code-cursor
+    vscode
     coreutils
     libnotify
     rofi-power-menu
@@ -206,8 +236,6 @@
     wireshark
 home-manager
   ];
-  # enable editor to be vim
-  environment.variables.EDITOR = "vim";
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -221,6 +249,13 @@ home-manager
   # Enable the OpenSSH daemon.
    services.openssh.enable = true;
 
+   programs.ssh.startAgent = true;
+
+  # enable editor to be vim
+  environment.variables = {
+    EDITOR = "vim";
+    SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
