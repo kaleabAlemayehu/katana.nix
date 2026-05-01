@@ -120,26 +120,56 @@ nixpkgs.config.allowUnfree = true;
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host github.com
-        HostName ssh.github.com
-        Port 443
-        User git
-        IdentityFile ~/.ssh/github_id_ed25519
-        IdentitiesOnly yes
-
-      Host awura.tech
-        HostName git.awura.tech
-        Port 443
-        User git
-        IdentityFile ~/.ssh/awura_gitlab_id_ed25519
-        IdentitiesOnly yes
-      Host 91.99.186.71
-        Port 443
-        User root
-        IdentityFile ~/.ssh/awura_gitlab_id_ed25519
-        IdentitiesOnly yes
-    '';
+    # extraConfig = ''
+    #   Host github.com
+    #     HostName ssh.github.com
+    #     Port 443
+    #     User git
+    #     IdentityFile ~/.ssh/github_id_ed25519
+    #     IdentitiesOnly yes
+    #
+    #   Host awura.tech
+    #     HostName git.awura.tech
+    #     Port 443
+    #     User git
+    #     IdentityFile ~/.ssh/awura_gitlab_id_ed25519
+    #     IdentitiesOnly yes
+    #   Host 91.99.186.71
+    #     Port 22
+    #     User root
+    #     IdentityFile ~/.ssh/awura_gitlab_id_ed25519
+    #     IdentitiesOnly yes
+    # '';
+    matchBlocks = {
+    "github.com" = {
+      hostname = "ssh.github.com";
+      port = 443;
+      user = "git";
+      identityFile = "~/.ssh/github_id_ed25519";
+      identitiesOnly = true;
+    };
+    "gitlab.com" = {
+      hostname = "ssh.gitlab.com";
+      port = 443;
+      user = "git";
+      identityFile = "~/.ssh/gitlab_id_ed25519";
+      identitiesOnly = true;
+    };
+    "git.awura.tech awura.tech" = {
+      hostname = "git.awura.tech";
+      port = 22;
+      user = "git";
+      identityFile = "~/.ssh/awura_gitlab_id_ed25519";
+      identitiesOnly = true;
+    };
+    "awura-vps" = { # You can use an alias here!
+      hostname = "91.99.186.71"; 
+      port = 22;
+      user = "root";
+      identityFile = "~/.ssh/awura_gitlab_id_ed25519"; # Reusing the same key
+      identitiesOnly = true;
+    };
+  };
   };
 
   # programs.keychain = {

@@ -84,7 +84,18 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
+  security.polkit.enable = true;
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "se.leap.bitmask.policy" ||
+          action.id == "org.freedesktop.policykit.exec" && 
+          action.lookup("program").indexOf("bitmask-root") !== -1) {
+        if (subject.isInGroup("wheel")) {
+          return polkit.Result.YES;
+        }
+      }
+    });
+  '';
  hardware.graphics.extraPackages = with pkgs; [
     mesa.opencl 
   ];
@@ -96,7 +107,14 @@ environment.variables = {
   # services.xserver.libinput.enable = true;
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.auto-optimise-store = true;
 
+  # adding automatic garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.neo = {
     isNormalUser = true;
@@ -109,6 +127,7 @@ environment.variables = {
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_license = true;
 
   home-manager = {
     # also pass inputs to home-manager modules
@@ -117,6 +136,15 @@ environment.variables = {
      "neo" = import ./home.nix;
     };
   };
+
+  # Dynamic linking
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    # Add any missing dynamic libraries for unpackaged programs
+    # here, NOT in environment.systemPackages
+    stdenv.cc.cc.lib
+    zlib
+  ];
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -127,14 +155,34 @@ environment.variables = {
   # Enable automatic timezoned  
   services.automatic-timezoned.enable = true;
 
+  # ENABLE CRON for the checkin request
+  services.cron = {
+    enable= true;
+    systemCronJobs = [
+      "0 9 * * 1-5 root /home/neo/Documents/projects/go-concurrency-exercises/script.sh IN"
+      "0 17 * * 1-5 root /home/neo/Documents/projects/go-concurrency-exercises/script.sh OUT"
+    ];
+  };
+
   # Enable AMD GPU drivers
   services.xserver.videoDrivers = [ "amdgpu" ];
   # Enable OpenGL and OpenCL support
   hardware.opengl.enable = true;
+
+  # bluetooth enable
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+  # Optional: enable experimental features like battery level monitoring
+  # hardware.bluetooth.settings = { General = { Experimental = true; }; };
   # Allow unfree packages
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    mattermost
+    # android-studio-full
+    ngrok
+    wineWowPackages.unstableFull
     obs-studio
     antigravity
     exercism
@@ -218,7 +266,7 @@ environment.variables = {
     gcc
     glibc
     glibc.dev
-    neofetch
+    # neofetch
     fastfetch
     discord
     wayland
@@ -250,6 +298,7 @@ home-manager
    services.openssh.enable = true;
 
    programs.ssh.startAgent = true;
+   services.gnome.gcr-ssh-agent.enable = false;
 
   # enable editor to be vim
   environment.variables = {
