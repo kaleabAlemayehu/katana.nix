@@ -179,6 +179,8 @@ environment.variables = {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+    ghostty 
     mattermost
     # android-studio-full
     ngrok
@@ -272,11 +274,11 @@ environment.variables = {
     wayland
     wayland-protocols
     libxkbcommon
-    xorg.libX11
-    xorg.libXrandr
-    xorg.libXinerama
-    xorg.libXcursor
-    xorg.libXxf86vm
+    libx11
+    libxrandr
+    libxinerama
+    libxcursor
+    libxxf86vm
     mesa
     pkg-config
     copyq
